@@ -1,0 +1,27 @@
+name: .NET build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies      
+      run: dotnet restore -v minimal -fileLogger -flp:LogFile=restore.log;Verbosity=normal
+    - name: Build
+      run: dotnet build --no-restore -v normal -c Release -binaryLogger:LogFile=build.binlog -fileLogger -flp:LogFile=build.log
+#    - name: Pack
+#      run: dotnet pack --no-restore -v normal -c Release
+#    - name: Test
+#      run: dotnet test --no-build --verbosity normal
