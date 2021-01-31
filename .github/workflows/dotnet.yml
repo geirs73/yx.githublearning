@@ -17,9 +17,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore -v:n
+    - name: Restore dependencies      
+      run: dotnet restore -v minimal -fileLogger -fileLoggerParameters LogFile=restore.log;Verbosity=normal
     - name: Build
-      run: dotnet build --no-restore -v:n
+      run: dotnet build --no-restore -v normal -c Release -binaryLogger LogFile=build.binlog -fileLogger -fileLoggerParameters LogFile=build.log
+#    - name: Pack
+#      run: dotnet pack --no-restore -v normal -c Release
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
